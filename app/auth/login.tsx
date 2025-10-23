@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 
 import {
-  View,
+  Dimensions,
   Image,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
-  Dimensions,
-  Platform,
+  View,
 } from "react-native";
+
+import { createClient } from "@supabase/supabase-js";
 
 import { Eye, EyeOff } from "lucide-react-native";
 
+import { router } from "expo-router";
+import { COLORS } from "../../constants/colors";
+
 const { width } = Dimensions.get("window");
 
-import { COLORS } from "../../constants/colors";
-import { navigate } from "expo-router/build/global-state/routing";
-
+const supabase = createClient(
+  process.env.EXPO_PUBLIC_SUPABASE_URL,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
+);
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +30,28 @@ export default function LoginScreen() {
   const [keepSignedIn, setKeepSignedIn] = useState(false);
 
   const switchRegister = () => {
-    navigate("/auth/register");
+    router.push("/auth/register");
+  };
+
+  const handleLogin = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        console.error("Error logging in:", error.message);
+        return;
+      }
+      if (data.user) {
+        console.log("User logged in:", data.user);
+        setTimeout(() => {
+          router.replace("/homepage/page");
+        }, 3000);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error.message);
+    }
   };
 
   return (
@@ -198,7 +225,7 @@ export default function LoginScreen() {
             width: "100%",
             marginBottom: 20,
           }}
-          onPress={() => console.log("Login clicked")}
+          onPress={handleLogin}
         >
           <Text
             style={{

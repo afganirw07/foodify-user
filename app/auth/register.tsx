@@ -1,31 +1,71 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { navigate } from "expo-router/build/global-state/routing";
 import {
-  View,
+  Dimensions,
   Image,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
-  Dimensions,
-  Platform,
+  View,
 } from "react-native";
 
 import { Eye, EyeOff } from "lucide-react-native";
 
+import { createClient } from "@supabase/supabase-js";
+import { COLORS } from "../../constants/colors";
+
 const { width } = Dimensions.get("window");
 
-import { COLORS } from "../../constants/colors";
+const supabase = createClient(
+  process.env.EXPO_PUBLIC_SUPABASE_URL,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
-  s;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [keepSignedIn, setKeepSignedIn] = useState(false);
+  const [role, setRole] = useState("user");
+
 
   const switchLogin = () => {
-    navigate("/auth/login");
+    router.push("/auth/login");
+  };
+
+  const handleRegister = async () => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        console.error("Error signing up:", error.message);
+        return;
+      }
+
+      if (data.user) {
+        console.log("User registered:", data.user);
+
+        // save data to 'users' table
+        const { error: insertError } = await supabase.from("users").insert({
+          id: data.user.id,
+          name: name,
+          email: email,
+          role: role,
+        });
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 3000);
+
+        if (insertError) {
+          console.error("Error saving user data:", insertError.message);
+        }
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error.message);
+    }
   };
 
   return (
@@ -191,7 +231,7 @@ export default function RegisterScreen() {
             width: "100%",
             marginBottom: 20,
           }}
-          onPress={() => console.log("Login clicked")}
+          onPress={handleRegister}
         >
           <Text
             style={{

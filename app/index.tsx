@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import { router } from "expo-router";
 import LottieView from "lottie-react-native";
+import React, { useEffect } from "react";
 import { View } from "react-native";
-import { navigate } from "expo-router/build/global-state/routing";
 
 export default function splashScreens() {
 
   const toRegister = () => {
     setTimeout(() => {
-      navigate("/auth/register");
+      router.replace("/auth/register");
     }, 3000);
   }
 
