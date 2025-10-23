@@ -174,7 +174,7 @@ export default function RegisterScreen() {
           }}
         >
           <Text style={{ fontSize: 13, color: COLORS.darkText }}>
-            By continuing, you agree to our{" "}
+            Keep going if you’re okay with our{" "}
             <Text style={{ fontWeight: "bold", color: COLORS.primary }}>
               Terms of Service
             </Text>
@@ -185,7 +185,7 @@ export default function RegisterScreen() {
         <TouchableOpacity
           style={{
             backgroundColor: COLORS.primary,
-            padding: 15,
+            padding: 12,
             borderRadius: 8,
             alignItems: "center",
             width: "100%",
@@ -217,7 +217,7 @@ export default function RegisterScreen() {
       >
         <View style={{ flex: 1, height: 1, backgroundColor: "#eee" }} />
         <Text style={{ marginHorizontal: 10, fontSize: 14, color: "#777" }}>
-          or register in with
+          or Register with
         </Text>
         <View style={{ flex: 1, height: 1, backgroundColor: "#eee" }} />
       </View>

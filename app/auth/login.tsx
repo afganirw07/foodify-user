@@ -192,7 +192,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={{
             backgroundColor: COLORS.primary,
-            padding: 15,
+            padding: 12,
             borderRadius: 8,
             alignItems: "center",
             width: "100%",
@@ -224,7 +224,7 @@ export default function LoginScreen() {
       >
         <View style={{ flex: 1, height: 1, backgroundColor: "#eee" }} />
         <Text style={{ marginHorizontal: 10, fontSize: 14, color: "#777" }}>
-          or sign in with
+          or Login with
         </Text>
         <View style={{ flex: 1, height: 1, backgroundColor: "#eee" }} />
       </View>
