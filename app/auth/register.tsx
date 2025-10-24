@@ -68,6 +68,19 @@ export default function RegisterScreen() {
     }
   };
 
+  const registerWithGoogle = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+      if (error) {
+        console.error("Error with Google sign-in:", error.message);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error.message);
+    }
+  }
+
   return (
     <View
       style={{
@@ -276,7 +289,8 @@ export default function RegisterScreen() {
           width: "100%",
           marginBottom: 30,
         }}
-        onPress={() => console.log("Google clicked")}
+        onPress={registerWithGoogle}
+        
       >
         <Image
           source={require("../../assets/logo/google.png")}
