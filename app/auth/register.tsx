@@ -16,6 +16,7 @@ import { createClient } from "@supabase/supabase-js";
 import { COLORS } from "../../constants/colors";
 
 const { width } = Dimensions.get("window");
+import { SignInWithGoogle } from "@/component/auth/authGoogle";
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
@@ -70,7 +71,7 @@ export default function RegisterScreen() {
 
   const registerWithGoogle = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
       });
       if (error) {
@@ -276,36 +277,11 @@ export default function RegisterScreen() {
       </View>
 
       {/* Google Button */}
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: COLORS.lightGray,
-          padding: 12,
-          borderRadius: 8,
-          borderWidth: 1,
-          borderColor: COLORS.mediumGray,
-          width: "100%",
-          marginBottom: 30,
-        }}
-        onPress={registerWithGoogle}
-        
-      >
-        <Image
-          source={require("../../assets/logo/google.png")}
-          style={{ width: 20, height: 20, marginRight: 10 }}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            color: COLORS.darkText,
-            fontWeight: "600",
-          }}
-        >
-          Continue with Google
-        </Text>
-      </TouchableOpacity>
+      <View>
+        <SignInWithGoogle />
+      </View>
+
+      {/* Switch to Login */}
       <View style={{ flexDirection: "row", alignSelf: "center" }}>
         <Text
           style={{ fontSize: 16, color: COLORS.darkText, fontWeight: "600" }}

@@ -18,6 +18,7 @@ import { router } from "expo-router";
 import { COLORS } from "../../constants/colors";
 
 const { width } = Dimensions.get("window");
+import { SignInWithGoogle } from "@/component/auth/authGoogle";
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
@@ -257,35 +258,9 @@ export default function LoginScreen() {
       </View>
 
       {/* Google Button */}
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: COLORS.lightGray,
-          padding: 12,
-          borderRadius: 8,
-          borderWidth: 1,
-          borderColor: COLORS.mediumGray,
-          width: "100%",
-          marginBottom: 30,
-        }}
-        onPress={() => console.log("Google clicked")}
-      >
-        <Image
-          source={require("../../assets/logo/google.png")}
-          style={{ width: 20, height: 20, marginRight: 10 }}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            color: COLORS.darkText,
-            fontWeight: "600",
-          }}
-        >
-          Continue with Google
-        </Text>
-      </TouchableOpacity>
+      <View>
+        <SignInWithGoogle />
+      </View>
 
       {/* Create Account Link */}
       <View style={{ flexDirection: "row", alignSelf: "center" }}>
