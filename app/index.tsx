@@ -1,18 +1,30 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 
-export default function splashScreens() {
-
-  const toRegister = () => {
-    setTimeout(() => {
-      router.replace("/auth/register");
-    }, 3000);
-  }
+export default function SplashScreen() {
 
   useEffect(() => {
-    toRegister();
+    const checkUserStatus = async () => {
+      try {
+        const userId = await AsyncStorage.getItem('userId');
+        
+        setTimeout(() => {
+          if (userId) {
+            router.replace("/homepage/page");
+          } else {
+            router.replace("/auth/register");
+          }
+        }, 3000);
+      } catch (e) {
+        console.error("Failed to fetch user status:", e);
+        setTimeout(() => router.replace("/auth/register"), 3000);
+      }
+    };
+
+    checkUserStatus();
   }, []);
 
   return (

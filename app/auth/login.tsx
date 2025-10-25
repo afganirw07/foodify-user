@@ -19,6 +19,7 @@ import { COLORS } from "../../constants/colors";
 
 const { width } = Dimensions.get("window");
 import { SignInWithGoogle } from "@/component/auth/authGoogle";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL,
@@ -46,6 +47,10 @@ export default function LoginScreen() {
       }
       if (data.user) {
         console.log("User logged in:", data.user);
+
+        const storageUserId = JSON.stringify(data.user.id)
+        await AsyncStorage.setItem('userId', storageUserId);
+
         setTimeout(() => {
           router.replace("/homepage/page");
         }, 3000);

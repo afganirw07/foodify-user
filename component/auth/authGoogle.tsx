@@ -37,7 +37,6 @@ const SignInWithGoogle = () => {
           await supabase.auth.exchangeCodeForSession(url);
         if (sessionError) console.error(sessionError);
         else console.log("Login success:", sessionData);
-        supabase.from("users")
       }
     }
   };
