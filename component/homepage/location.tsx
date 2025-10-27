@@ -1,18 +1,13 @@
 import { MapPin } from "lucide-react-native";
 import React from "react";
 import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-
 
 export default function LocationRestaurant() {
 
     return (
-        <SafeAreaView>
-            <View style={{ flexDirection:"row" }}>
-                <MapPin />
-                <Text style={{ color: "#000" }}> Hello wordd</Text>
-
+            <View style={{ flexDirection: "row", gap: 8 }}>
+                <MapPin size={30} />
+                <Text style={{ color: "#000", fontFamily: "roboto", fontSize: 17, fontWeight: "bold", marginTop: 4 }}>Maison de Lumière</Text>
             </View>
-        </SafeAreaView>
     )
 }
