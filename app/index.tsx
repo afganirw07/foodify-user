@@ -12,7 +12,7 @@ export default function SplashScreen() {
         const userId = await AsyncStorage.getItem('userId');
         
         setTimeout(() => {
-          if (userId) {
+          if (!userId) {
             router.replace("/homepage/page");
           } else {
             router.replace("/auth/register");

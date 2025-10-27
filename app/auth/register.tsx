@@ -69,18 +69,6 @@ export default function RegisterScreen() {
     }
   };
 
-  const registerWithGoogle = async () => {
-    try {
-        const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-      if (error) {
-        console.error("Error with Google sign-in:", error.message);
-      }
-    } catch (error) {
-      console.error("An unexpected error occurred:", error.message);
-    }
-  }
 
   return (
     <View
