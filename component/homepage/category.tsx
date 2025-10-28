@@ -42,19 +42,17 @@ export default function Category() {
                                 marginRight: 10,
                                 minWidth: 90,
 
-                                // Gaya Berdasarkan Pilihan
-                                backgroundColor: isSelected ? COLORS.primary : "#f5f5f5", 
-                                borderWidth: isSelected ? 0 : 1, // Tidak ada border jika terpilih
-                                borderColor: '#e0e0e0',
+                                backgroundColor: isSelected ? COLORS.primary : "rgba(201, 195, 195, 0.1)", 
+                                borderWidth: isSelected ? 0 : 1, 
+                                borderColor: '#transparent',
                             }}
                             onPress={() => console.log(`Tapped ${category.name}`)}
                         >
-                            {/* Teks Kategori */}
                             <Text style={{
                                 fontSize: 16,
                                 fontFamily: "roboto",
                                 fontWeight: "bold",
-                                color: isSelected ? "white" : "black", // Putih vs Hitam
+                                color: isSelected ? "white" : "black", 
                             }}>
                                 {category.name}
                             </Text>
