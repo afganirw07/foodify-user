@@ -17,7 +17,7 @@ export default function Category() {
 
             <View style={{ flexDirection: "row", alignItems: "baseline", marginBottom: 15 }}>
                 <Text style={{ fontSize: 24, fontWeight: "bold", color: 'black' }}>
-                    Find
+                    Find 
                 </Text>           
             </View>
 
