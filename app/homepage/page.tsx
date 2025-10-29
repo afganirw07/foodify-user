@@ -19,30 +19,42 @@ export default function Homepage() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <FlatList
-        ListHeaderComponent={
-          <>
-            <View style={{ paddingHorizontal: 20, marginTop: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <LocationRestaurant />
-              <Sidebar />
-            </View>
-            <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-              <Slogan />
-            </View>
-            <View style={{ paddingHorizontal: 20, marginTop: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <View style={{ width: "80%" }}>
-                <SearchFood />
-              </View>
-              <Filter />
-            </View>
-            <View style={{ marginTop: 5 }}>
-              <Category />
-            </View>
-          </>
-        }
-        ListFooterComponent={<MenuRestaurant />}
+        data={[
+          { type: 'header', id: 'header' },
+          { type: 'category', id: 'category' },
+          { type: 'menu', id: 'menu' },
+        ]}
+        renderItem={({ item }) => {
+          if (item.type === 'header') {
+            return (
+              <>
+                <View style={{ paddingHorizontal: 20, marginTop: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                  <LocationRestaurant />
+                  <Sidebar />
+                </View>
+                <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
+                  <Slogan />
+                </View>
+                <View style={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                  <View style={{ width: "80%" }}>
+                    <SearchFood />
+                  </View>
+                  <Filter />
+                </View>
+              </>
+            );
+          }
+          if (item.type === 'category') {
+            return <Category />;
+          }
+          if (item.type === 'menu') {
+            return <MenuRestaurant />;
+          }
+          return null;
+        }}
+        keyExtractor={item => item.id}
+        stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
-        data={[]} 
-        renderItem={null}
       />
     </SafeAreaView>
   );

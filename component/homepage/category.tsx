@@ -1,9 +1,8 @@
-import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { COLORS } from "@/constants/colors";
+import React from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Category() {
-    // Data untuk kategori makanan
     const categories = [
         { name: "Burger", isSelected: true },
         { name: "Pizza", isSelected: false },
@@ -13,15 +12,14 @@ export default function Category() {
     ];
 
     return (
-        <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+        <View style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: '#fff' }}>
 
             <View style={{ flexDirection: "row", alignItems: "baseline", marginBottom: 15 }}>
                 <Text style={{ fontSize: 24, fontWeight: "bold", color: 'black' }}>
-                    Find 
+                    Find something delicious 
                 </Text>           
             </View>
 
-            {/* Kategori Makanan Horizontal */}
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
