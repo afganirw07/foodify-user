@@ -17,6 +17,7 @@ const supabase = createClient(
 
 export default function Homepage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -56,7 +57,7 @@ export default function Homepage() {
                   }}
                 >
                   <View style={{ width: "80%" }}>
-                    <SearchFood />
+                    <SearchFood onSearchChange={(text) => setSearchQuery(text)} />
                   </View>
                   <Filter />
                 </View>
@@ -73,10 +74,9 @@ export default function Homepage() {
           }
 
           if (item.type === "menu") {
-            return <MenuRestaurant selectedCategory={selectedCategory} />;
+            return <MenuRestaurant selectedCategory={selectedCategory} searchQuery={searchQuery} />;
           }
 
-          return null;
         }}
         keyExtractor={(item) => item.id}
         stickyHeaderIndices={[1]}

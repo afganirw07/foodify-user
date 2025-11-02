@@ -17,28 +17,60 @@ interface MenuItem {
 
 export default function MenuRestaurant({
     selectedCategory,
+    searchQuery,
 }: {
     selectedCategory: string | null;
+    searchQuery?: string;
 }) {
     const [menu, setMenu] = useState<MenuItem[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const fetchMenu = async () => {
+        setLoading(true);
         let query = supabase.from("list_menu").select("*");
+
         if (selectedCategory) {
             query = query.eq("category", selectedCategory.toLowerCase());
         }
 
+        if (searchQuery && searchQuery.trim() !== "") {
+            query = query.ilike("name", `%${searchQuery.trim()}%`);
+        }
+
         const { data, error } = await query;
+        setLoading(false);
+
         if (error) {
             console.error("Error fetching menu:", error);
             return;
         }
-        if (data) setMenu(data);
+        setMenu(data || []);
     };
 
     useEffect(() => {
         fetchMenu();
-    }, [selectedCategory]);
+    }, [selectedCategory, searchQuery]);
+
+    const NotFoundFood = () => (
+        <View
+            style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 60,
+            }}
+        >
+            <Text
+                style={{
+                    fontSize: 18,
+                    color: "#777",
+                    fontWeight: "500",
+                }}
+            >
+                Maaf, makanan tidak ditemuka
+            </Text>
+        </View>
+    );
 
     const renderItem = ({ item }: { item: MenuItem }) => (
         <View
@@ -56,11 +88,7 @@ export default function MenuRestaurant({
         >
             <Image
                 source={{ uri: item.image_url }}
-                style={{
-                    width: "100%",
-                    height: 120,
-                    resizeMode: "cover",
-                }}
+                style={{ width: "100%", height: 120, resizeMode: "cover" }}
             />
             <View style={{ padding: 10 }}>
                 <Text style={{ fontSize: 16, fontWeight: "600", color: "black" }}>
@@ -70,6 +98,18 @@ export default function MenuRestaurant({
             </View>
         </View>
     );
+
+    if (loading) {
+        return (
+            <View style={{ alignItems: "center", marginTop: 40 }}>
+                <Text style={{ color: "#999" }}>Memuat menu...</Text>
+            </View>
+        );
+    }
+
+    if (menu.length === 0) {
+        return <NotFoundFood />;
+    }
 
     return (
         <FlatList
