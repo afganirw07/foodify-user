@@ -6,7 +6,7 @@ import SearchFood from "@/component/homepage/search";
 import Sidebar from "@/component/homepage/sidebar";
 import Slogan from "@/component/homepage/slogan";
 import { createClient } from "@supabase/supabase-js";
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,26 +16,45 @@ const supabase = createClient(
 );
 
 export default function Homepage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <FlatList
         data={[
-          { type: 'header', id: 'header' },
-          { type: 'category', id: 'category' },
-          { type: 'menu', id: 'menu' },
+          { type: "header", id: "header" },
+          { type: "category", id: "category" },
+          { type: "menu", id: "menu" },
         ]}
         renderItem={({ item }) => {
-          if (item.type === 'header') {
+          if (item.type === "header") {
             return (
               <>
-                <View style={{ paddingHorizontal: 20, marginTop: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    marginTop: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <LocationRestaurant />
                   <Sidebar />
                 </View>
                 <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
                   <Slogan />
                 </View>
-                <View style={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    marginTop: 20,
+                    paddingBottom: 20,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <View style={{ width: "80%" }}>
                     <SearchFood />
                   </View>
@@ -44,15 +63,22 @@ export default function Homepage() {
               </>
             );
           }
-          if (item.type === 'category') {
-            return <Category />;
+
+          if (item.type === "category") {
+            return (
+              <Category
+                onCategorySelect={(category) => setSelectedCategory(category)}
+              />
+            );
           }
-          if (item.type === 'menu') {
-            return <MenuRestaurant />;
+
+          if (item.type === "menu") {
+            return <MenuRestaurant selectedCategory={selectedCategory} />;
           }
+
           return null;
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false}
       />

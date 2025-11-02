@@ -1,23 +1,71 @@
 import { COLORS } from "@/constants/colors";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { createClient } from "@supabase/supabase-js";
 
-export default function Category() {
-    const categories = [
-        { name: "Burger", isSelected: true },
-        { name: "Pizza", isSelected: false },
-        { name: "Hotdog", isSelected: false },
-        { name: "Fried Chicken", isSelected: false },
-        { name: "Snack", isSelected: false },
-    ];
+const supabase = createClient(
+    process.env.EXPO_PUBLIC_SUPABASE_URL!,
+    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export default function Category({
+    onCategorySelect,
+}: {
+    onCategorySelect: (category: string | null) => void;
+}) {
+    const [categories, setCategories] = useState<
+        { name: string; isSelected: boolean }[]
+    >([]);
+
+    const fetchCategories = async () => {
+        const { data, error } = await supabase.from("list_menu").select("category");
+        if (error) {
+            console.error("Error fetching categories:", error);
+            return;
+        }
+
+        if (data) {
+            const uniqueCategories = [...new Set(data.map((item) => item.category))];
+            const initialCategories = uniqueCategories.map((category) => ({
+                name:
+                    typeof category === "string"
+                        ? category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
+                        : category,
+                isSelected: false,
+            }));
+            setCategories(initialCategories);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleSelect = (selected: string) => {
+        setCategories((prev) =>
+            prev.map((cat) => ({
+                ...cat,
+                isSelected: cat.name === selected ? !cat.isSelected : false,
+            }))
+        );
+
+        onCategorySelect((prev) => (prev === selected ? null : selected));
+    };
 
     return (
-        <View style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: '#fff' }}>
-
-            <View style={{ flexDirection: "row", alignItems: "baseline", marginBottom: 15 }}>
-                <Text style={{ fontSize: 24, fontWeight: "bold", color: 'black' }}>
-                    Find something delicious 
-                </Text>           
+        <View
+            style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: "#fff" }}
+        >
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    marginBottom: 15,
+                }}
+            >
+                <Text style={{ fontSize: 24, fontWeight: "bold", color: "black" }}>
+                    Find something delicious
+                </Text>
             </View>
 
             <ScrollView
@@ -34,24 +82,28 @@ export default function Category() {
                             style={{
                                 alignItems: "center",
                                 justifyContent: "center",
-                                borderRadius: 10, 
+                                borderRadius: 10,
                                 paddingHorizontal: 20,
                                 paddingVertical: 10,
                                 marginRight: 10,
                                 minWidth: 90,
-
-                                backgroundColor: isSelected ? COLORS.primary : "rgba(201, 195, 195, 0.1)", 
-                                borderWidth: isSelected ? 0 : 1, 
-                                borderColor: '#transparent',
+                                backgroundColor: isSelected
+                                    ? COLORS.primary
+                                    : "rgba(201, 195, 195, 0.1)",
+                                borderWidth: isSelected ? 0 : 1,
+                                borderColor: isSelected
+                                    ? COLORS.primary
+                                    : "rgba(201, 195, 195, 0.5)",
                             }}
-                            onPress={() => console.log(`Tapped ${category.name}`)}
+                            onPress={() => handleSelect(category.name)}
                         >
-                            <Text style={{
-                                fontSize: 16,
-                                fontFamily: "roboto",
-                                fontWeight: "bold",
-                                color: isSelected ? "white" : "black", 
-                            }}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    fontWeight: "bold",
+                                    color: isSelected ? "white" : "black",
+                                }}
+                            >
                                 {category.name}
                             </Text>
                         </TouchableOpacity>
