@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/colors";
 import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, View } from "react-native";
@@ -67,7 +68,7 @@ export default function MenuRestaurant({
                     fontWeight: "500",
                 }}
             >
-                Maaf, makanan tidak ditemuka
+                Maaf, makanan tidak ditemukan
             </Text>
         </View>
     );
@@ -76,25 +77,20 @@ export default function MenuRestaurant({
         <View
             style={{
                 flex: 1,
-                backgroundColor: "white",
                 margin: 8,
-                borderRadius: 12,
-                shadowColor: "#000",
-                shadowOpacity: 0.1,
-                shadowRadius: 5,
                 elevation: 3,
                 overflow: "hidden",
             }}
         >
             <Image
                 source={{ uri: item.image_url }}
-                style={{ width: "100%", height: 120, resizeMode: "cover" }}
+                style={{ width: "100%", height: 150, resizeMode: "cover", borderRadius: 10}}
             />
-            <View style={{ padding: 10 }}>
-                <Text style={{ fontSize: 16, fontWeight: "600", color: "black" }}>
+            <View style={{ padding: 3, marginTop: 6 }}>
+                <Text style={{ fontSize: 16, color: "black", marginTop: 2 }}>
                     {item.name}
                 </Text>
-                <Text style={{ color: "#777", marginTop: 4 }}>Rp {item.price}</Text>
+                <Text style={{ color: COLORS.primary, marginTop: 15, fontSize: 16, fontWeight: "400"}}>Rp {item.price}</Text>
             </View>
         </View>
     );
