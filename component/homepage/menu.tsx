@@ -1,7 +1,8 @@
 import { COLORS } from "@/constants/colors";
 import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 const supabase = createClient(
     process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -73,8 +74,15 @@ export default function MenuRestaurant({
         </View>
     );
 
+
+    const router = useRouter();
+
     const renderItem = ({ item }: { item: MenuItem }) => (
-        <View
+        <TouchableOpacity
+            onPress={() => router.push({
+                pathname: '/detail/page',
+                params: {id: item.id}
+            })}
             style={{
                 flex: 1,
                 margin: 8,
@@ -92,7 +100,7 @@ export default function MenuRestaurant({
                 </Text>
                 <Text style={{ color: COLORS.primary, marginTop: 15, fontSize: 16, fontWeight: "400"}}>Rp {item.price}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     if (loading) {
