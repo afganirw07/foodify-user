@@ -39,6 +39,8 @@ export default function MenuRestaurant({
             query = query.ilike("name", `%${searchQuery.trim()}%`);
         }
 
+        
+
         const { data, error } = await query;
         setLoading(false);
 
@@ -98,7 +100,7 @@ export default function MenuRestaurant({
                 <Text style={{ fontSize: 16, color: "black", marginTop: 2 }}>
                     {item.name}
                 </Text>
-                <Text style={{ color: COLORS.primary, marginTop: 15, fontSize: 16, fontWeight: "400"}}>Rp {item.price}</Text>
+                <Text style={{ color: COLORS.primary, marginTop: 15, fontSize: 16, fontWeight: "400"}}>Rp {item.price.toLocaleString()}</Text>
             </View>
         </TouchableOpacity>
     );

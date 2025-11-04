@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/colors";
 import { createClient } from "@supabase/supabase-js";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowLeft, Check, Star } from "lucide-react-native";
+import { ArrowLeft, Check, Minus, Plus, Star } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
@@ -16,7 +16,7 @@ interface MenuItem {
     price: number;
     image_url: string;
     category: string;
-    description?: string;
+    descr?: string;
     rating?: number;
 }
 
@@ -25,6 +25,7 @@ export default function DetailFood() {
     const router = useRouter();
     const [menu, setMenu] = useState<MenuItem | null>(null);
     const [isExtraPortionSelected, setIsExtraPortionSelected] = useState(false);
+    const [quantity, setQuantity] = useState(1);
 
     const fetchDetail = async () => {
         const { data, error } = await supabase
@@ -43,6 +44,14 @@ export default function DetailFood() {
     useEffect(() => {
         fetchDetail();
     }, [id]);
+
+    const handleIncrement = () => {
+        setQuantity(prevQuantity => prevQuantity + 1);
+    };
+
+    const handleDecrement = () => {
+        setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+    };
 
     if (!menu) {
         return (
@@ -109,6 +118,10 @@ export default function DetailFood() {
                     </View>
                 </View>
 
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: COLORS.primary, marginTop: 10 }}>
+                    Rp {menu.price.toLocaleString('id-ID')}
+                </Text>
+
                 <Text
                     style={{
                         marginTop: 15,
@@ -117,7 +130,7 @@ export default function DetailFood() {
                         fontSize: 15,
                     }}
                 >
-                    {menu.description ||
+                    {menu.descr ||
                         "Makanan lezat yang dibuat dengan bahan segar dan penuh rasa. Cocok untuk dinikmati kapan saja."}
                 </Text>
             </View>
@@ -161,7 +174,27 @@ export default function DetailFood() {
                         </View>
                         <Text style={{ fontSize: 16, fontWeight: '500' }}>Extra Portion</Text>
                     </View>
-                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#555' }}>+Rp 10.000</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '500', color: '#555' }}>+Rp {(10000).toLocaleString('id-ID')}</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Bagian Input Jumlah */}
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 30,
+                marginBottom: 10,
+                gap: 20
+            }}>
+                <TouchableOpacity onPress={handleDecrement} style={{ padding: 10, backgroundColor: 'rgba(201, 195, 195, 0.2)', borderRadius: 50 }}>
+                    <Minus size={24} color="#555" />
+                </TouchableOpacity>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'black' }}>
+                    {quantity}
+                </Text>
+                <TouchableOpacity onPress={handleIncrement} style={{ padding: 10, backgroundColor: COLORS.primary, borderRadius: 50 }}>
+                    <Plus size={24} color="#fff" />
                 </TouchableOpacity>
             </View>
 
