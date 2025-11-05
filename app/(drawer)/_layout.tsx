@@ -3,11 +3,21 @@ import { useRouter } from 'expo-router';
 import { Drawer } from "expo-router/drawer";
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import COLORS from '../../constants/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function CustomDrawerContent(props: any) {
     const router = useRouter();
+
+    const LogOutUser = async () => {
+        try {
+            await AsyncStorage.removeItem('userId');
+            router.replace('/auth/login');
+        } catch (error) {
+            console.log("Log Out Berhasil")
+        }
+    }
+
     return (
         <DrawerContentScrollView {...props}>
             <View style={styles.logoContainer}>
@@ -19,10 +29,7 @@ function CustomDrawerContent(props: any) {
             <DrawerItemList {...props} />
             <DrawerItem
                 label="Keluar"
-                onPress={() => {
-                    console.log("Keluar");
-                    router.replace('/auth/login'); 
-                }}
+                onPress={LogOutUser}
             />
         </DrawerContentScrollView>
     );
@@ -65,7 +72,7 @@ export default function Layout() {
             />
             <Drawer.Screen
                 name="cart/page"
-                options={{ drawerLabel: 'Keranjang', title: 'Keranjang Saya' }}
+                options={{ drawerLabel: 'Cart', title: 'Keranjang Saya' }}
             />
         </Drawer>
     );

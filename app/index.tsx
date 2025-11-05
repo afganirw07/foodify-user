@@ -10,12 +10,15 @@ export default function SplashScreen() {
     const checkUserStatus = async () => {
       try {
         const userId = await AsyncStorage.getItem('userId');
+        const getStarted = await AsyncStorage.getItem('getStarted');
         
         setTimeout(() => {
           if (userId) {
             router.replace("/homepage/page");
-          } else {
+          } if (getStarted) {
             router.replace("/auth/register");
+          } else if (!getStarted) {
+            router.replace("/onboarding/FirstPage");
           }
         }, 3000);
       } catch (e) {

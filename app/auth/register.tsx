@@ -43,6 +43,8 @@ export default function RegisterScreen() {
       });
       if (error) {
         console.error("Error signing up:", error.message);
+
+        
         return;
       }
 

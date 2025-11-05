@@ -113,7 +113,7 @@ export default function DetailFood() {
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <Star color="#FFD700" fill="#FFD700" size={20} />
                         <Text style={{ marginLeft: 5, color: "#777" }}>
-                            {"4.8"}
+                            4.8
                         </Text>
                     </View>
                 </View>
