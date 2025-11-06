@@ -68,7 +68,7 @@ export default function Layout() {
             />
             <Drawer.Screen
                 name="profil/page"
-                options={{ drawerLabel: 'Profil', title: 'Profil Saya' }}
+                options={{ drawerLabel: 'Profil', title: 'Profil Saya', headerShown: false }}
             />
             <Drawer.Screen
                 name="cart/page"

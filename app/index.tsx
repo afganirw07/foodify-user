@@ -15,9 +15,9 @@ export default function SplashScreen() {
         setTimeout(() => {
           if (userId) {
             router.replace("/homepage/page");
-          } if (getStarted) {
+          } else if (getStarted) {
             router.replace("/auth/register");
-          } else if (!getStarted) {
+          } else {
             router.replace("/onboarding/FirstPage");
           }
         }, 3000);
@@ -28,7 +28,7 @@ export default function SplashScreen() {
     };
 
     checkUserStatus();
-  }, []);
+  }, []); 
 
   return (
     <View

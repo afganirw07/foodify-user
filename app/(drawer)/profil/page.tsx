@@ -1,13 +1,14 @@
 import React from "react";
 import { View } from "react-native";
 import Profile from "@/component/profile/profil";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function ProfileUser() {
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
             <Profile />
-        </View>
+        </SafeAreaView>
     )
 }
