@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import Profile from "@/component/profile/profil";
 import { SafeAreaView } from "react-native-safe-area-context";
 

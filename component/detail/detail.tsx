@@ -1,4 +1,5 @@
 import { COLORS } from "@/constants/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeft, Check, Minus, Plus, Star } from "lucide-react-native";
@@ -26,6 +27,39 @@ export default function DetailFood() {
     const [menu, setMenu] = useState<MenuItem | null>(null);
     const [isExtraPortionSelected, setIsExtraPortionSelected] = useState(false);
     const [quantity, setQuantity] = useState(1);
+
+    const handleAddCart = async () => {
+        const userId = await AsyncStorage.getItem("userId");
+        try {
+            if (userId && menu) {
+                const extraPrice = isExtraPortionSelected ? 10000 : 0;
+                const finalPrice = menu.price + extraPrice;
+
+                const { data, error } = await supabase
+                    .from("cart")
+                    .insert({
+                        user_id: JSON.parse(userId),
+                        menu_id: menu.id,
+                        quantity: quantity,
+                        price: finalPrice,
+                    })
+                    .select();
+
+                if (error) {
+                    console.error("Error adding to cart:", error);
+                    return;
+                }
+
+                console.log("Added to cart:", data);
+            } else {
+                console.log("User not logged in");
+                router.push("/auth/login");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
 
     const fetchDetail = async () => {
         const { data, error } = await supabase
@@ -212,7 +246,9 @@ export default function DetailFood() {
                         paddingVertical: 15,
                         borderRadius: 12,
                         alignItems: "center",
-                    }}>
+                    }}
+                    onPress={handleAddCart}
+                >
                     <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
                         ADD TO CART
                     </Text>
